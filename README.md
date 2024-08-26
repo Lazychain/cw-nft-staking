@@ -1,35 +1,9 @@
-# CosmWasm Project
+# NFT Staking Smart Contract
 
-## Building, Deploying, Instantiating
-
-```
-make build
-make deploy
-```
-
----
-
-## Local Development
-
-### A. Docker Setup
-1. Run local Juno node
-```
-make devnet
-```
-
-### B. Local System Setup
-
-1. Initialize Juno & Import key again
-```
-junod init --chain-id testing localdev
-```
-
-2. Import key
-```
-junod keys add JunoWallet --recover
-
-> Enter your bip39 mnemonic
-clip hire initial neck maid actor venue client foam budget lock catalog sweet steak waste crater broccoli pipe steak sister coyote moment obvious choose
-```
-
-Edit `$HOME/.juno/config/client.toml` and set `keyring-backend = "test"` to match the Juno node running in Docker.
+Stake NFT's from one or more CW721 collections to earn tokens at the end of each
+vesting period, which you must claim at your convenience. Each NFT vests on its
+own schedule, relative to the block time in which it is staked. Is is possible
+for the contract's admin to set a minimum number of vesting periods during which
+an NFT cannot be unstaked. For example, if the vesting period is 12 hours and
+the minimum required vesting periods is 2, the NFT will remain locked for a
+total duration of 24 hours.

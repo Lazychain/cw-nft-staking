@@ -1,7 +1,12 @@
 use crate::error::ContractError;
-use crate::execute::{set_config::exec_set_config, Context};
+use crate::execute::claim::exec_claim;
+use crate::execute::cw721_receive::exec_cw721_receive;
+use crate::execute::{unstake::exec_unstake, Context};
 use crate::msg::{ExecuteMsg, InstantiateMsg, MigrateMsg, QueryMsg};
-use crate::query::{config::query_config, ReadonlyContext};
+use crate::query::account::query_account;
+use crate::query::config::query_config;
+use crate::query::metadata::query_metadata;
+use crate::query::ReadonlyContext;
 use crate::state;
 use cosmwasm_std::{entry_point, to_json_binary};
 use cosmwasm_std::{Binary, Deps, DepsMut, Env, MessageInfo, Response};
@@ -30,7 +35,9 @@ pub fn execute(
 ) -> Result<Response, ContractError> {
     let ctx = Context { deps, env, info };
     match msg {
-        ExecuteMsg::SetConfig(config) => exec_set_config(ctx, config),
+        ExecuteMsg::ReceiveNft(cw721_receive_msg) => exec_cw721_receive(ctx, cw721_receive_msg),
+        ExecuteMsg::Unstake { cw721_addr, token_id } => exec_unstake(ctx, cw721_addr, token_id),
+        ExecuteMsg::Claim {} => exec_claim(ctx),
     }
 }
 
@@ -42,7 +49,9 @@ pub fn query(
 ) -> Result<Binary, ContractError> {
     let ctx = ReadonlyContext { deps, env };
     let result = match msg {
+        QueryMsg::Account { address } => to_json_binary(&query_account(ctx, address)?),
         QueryMsg::Config {} => to_json_binary(&query_config(ctx)?),
+        QueryMsg::Metadata {} => to_json_binary(&query_metadata(ctx)?),
     }?;
     Ok(result)
 }

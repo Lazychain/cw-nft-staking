@@ -1,4 +1,6 @@
-pub mod set_config;
+pub mod claim;
+pub mod cw721_receive;
+pub mod unstake;
 
 use cosmwasm_std::{DepsMut, Env, MessageInfo};
 

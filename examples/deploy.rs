@@ -1,10 +1,9 @@
 use anybuf::Anybuf;
-use contract::{
+use cosmos_sdk_proto::Any;
+use cw_nft_staking::{
     msg::{InstantiateMsg, MigrateMsg},
-    state::models::Config,
     Contract, ContractExecuteMsgFns, ContractQueryMsgFns,
 };
-use cosmos_sdk_proto::Any;
 use cw_orch::{
     anyhow::{self, Ok},
     daemon::{networks, TxSender},
@@ -43,10 +42,10 @@ pub fn main() -> anyhow::Result<()> {
     }
 
     // can call any necessary execution messages here like adding admin, etc.
-    contract.set_config(Config {})?;
+    // contract.set_config(Config {})?;
 
     // can also query any necessary data here from the contract
-    contract.config()?;
+    // contract.config()?;
 
     Ok(())
 }
